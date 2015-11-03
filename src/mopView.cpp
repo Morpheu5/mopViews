@@ -57,7 +57,8 @@ namespace mop {
 		for(auto subView : _subViews) {
 			subView->_propagateTouches(touches, type);
 		}
-		auto theApp = static_cast<mopViewsApp::TheApp*>(App::get());
+		// If the App class inherits from mopViewsApp, then the dynamic cast works.
+		auto theApp = dynamic_cast<mop::mopViewsApp*>(App::get());
 		for(auto touchIt = touches.begin(); touchIt != touches.end(); ) {
 			auto touch = *touchIt;
 			vec2 p = theApp->screenToWorld(touch.getPos());
