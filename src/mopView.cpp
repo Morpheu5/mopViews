@@ -8,11 +8,23 @@ namespace mop {
 
 	View::View() {
 		_id = ++s_id;
+		auto shader = gl::getStockShader(gl::ShaderDef().color().texture());
+		auto color = ColorAf(1,1,1,0.333f);
+		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
+		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y)).colors(color, color, color, color), shader);
+	}
+	
+	void View::setSize(vec2 size) {
+		_size = size;
+		auto shader = gl::getStockShader(gl::ShaderDef().color());
+		auto color = ColorAf(1,1,1,0.333f);
+		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
+		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-size.x/2, size.y/2, size.x/2, -size.y)).colors(color, color, color, color), shader);
 	}
 
 	void View::draw() {
 		gl::color(1,1,1);
-		gl::drawStrokedRect(Rectf(-_size/2.0f, _size/2.0f));
+		_boundsBatch->draw();
 		drawSubViews();
 	}
 	
@@ -41,11 +53,11 @@ namespace mop {
 
 	bool View::hitTest(vec2 point) {
 		auto p = vec2(rotate(-_angle, vec3(0, 0, 1)) * translate(vec3(-_position, 0)) * vec4(point, 0, 1));
-		Area a(-_size/2.0f, _size/2.0f);
-		if(a.contains(p)) {
+		if(_bounds.contains(p)) {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	void View::propagateTouches(ci::app::TouchEvent &event, TouchEventType type) {
@@ -57,7 +69,8 @@ namespace mop {
 		for(auto subView : _subViews) {
 			subView->_propagateTouches(touches, type);
 		}
-		auto theApp = static_cast<mopViewsApp::TheApp*>(App::get());
+		// If the App class inherits correctly, the dynamic_cast works.
+		auto theApp = dynamic_cast<mop::mopViewsApp*>(App::get());
 		for(auto touchIt = touches.begin(); touchIt != touches.end(); ) {
 			auto touch = *touchIt;
 			vec2 p = theApp->screenToWorld(touch.getPos());

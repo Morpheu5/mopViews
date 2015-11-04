@@ -3,6 +3,6 @@
 namespace mop {
 	class mopViewsApp {
 	public:
-		virtual vec2 screenToWorld(vec2&) = 0;
+		virtual const vec2 screenToWorld(const vec2&) = 0;
 	};
 }

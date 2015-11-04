@@ -37,6 +37,9 @@ namespace mop {
 		float _angle = 0.0f;
 		bool _touchOpaque = false;
 		
+		Rectf _bounds;
+		gl::BatchRef _boundsBatch;
+		
 		mutex _subViewsMtx;
 		vector<shared_ptr<View>> _subViews;
 		unordered_set<unsigned long> _touchesBeganInside;
@@ -56,7 +59,7 @@ namespace mop {
 		
 		const unsigned long id() { return _id; }
 		
-		virtual void setSize(vec2 size) { _size = size; }
+		virtual void setSize(vec2 size);
 		virtual void setPosition(vec2 position) { _position = position; }
 		virtual void setAngle(float angle) { _angle = angle; }
 		virtual void setTouchOpaque(bool touchOpaque = true) { _touchOpaque = touchOpaque; }
