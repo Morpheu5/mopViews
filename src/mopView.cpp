@@ -73,6 +73,7 @@ namespace mop {
 		auto theApp = dynamic_cast<mop::mopViewsApp*>(App::get());
 		for(auto touchIt = touches.begin(); touchIt != touches.end(); ) {
 			auto touch = *touchIt;
+			// Here is the big moment where we convert from screen to world coordinates.
 			vec2 p = theApp->screenToWorld(touch.getPos());
 			switch(type) {
 				case TouchBegan: {
