@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="mopViews"
+	id="net.morpheu5.mopviews"
+	author="Andrea Franceschini"
+	core="false"
+	>
+	<source>src/mopView.cpp</source>
+	<source>src/mopRootView.cpp</source>
+	<header>src/mopView.h</header>
+	<header>src/mopRootView.h</header>
+	<header>src/mopViewController.h</header>
+	<header>src/mopViews.h</header>
+	<header>src/mopViewsApp.h</header>
+	<includePath>src</includePath>
+</block>
+</cinder>
