@@ -24,7 +24,7 @@ namespace mop {
 	};
 	
 	class View;
-	typedef ci::signals::Signal<void(const View*, TouchSignalType, vec2, vec2)> TouchEventSignal;
+	typedef ci::signals::Signal<void(View*, TouchSignalType, vec2, vec2)> TouchEventSignal;
 
 	class View {
 		static unsigned long s_id;
