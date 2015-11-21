@@ -11,7 +11,7 @@ namespace mop {
 		auto shader = gl::getStockShader(gl::ShaderDef().color().texture());
 		auto color = ColorAf(1,1,1,0.333f);
 		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
-		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y)).colors(color, color, color, color), shader);
+		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y/2)).colors(color, color, color, color), shader);
 	}
 	
 	void View::setSize(vec2 size) {
@@ -19,7 +19,7 @@ namespace mop {
 		auto shader = gl::getStockShader(gl::ShaderDef().color());
 		auto color = ColorAf(1,1,1,0.333f);
 		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
-		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-size.x/2, size.y/2, size.x/2, -size.y)).colors(color, color, color, color), shader);
+		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-size.x/2, size.y/2, size.x/2, -size.y/2)).colors(color, color, color, color), shader);
 	}
 
 	void View::draw() {
