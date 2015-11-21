@@ -10,7 +10,7 @@ namespace mop {
 		_id = ++s_id;
 		auto shader = gl::getStockShader(gl::ShaderDef().color().texture());
 		auto color = ColorAf(1,1,1,0.333f);
-		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
+		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y/2);
 		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y/2)).colors(color, color, color, color), shader);
 	}
 	
@@ -18,7 +18,7 @@ namespace mop {
 		_size = size;
 		auto shader = gl::getStockShader(gl::ShaderDef().color());
 		auto color = ColorAf(1,1,1,0.333f);
-		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y);
+		_bounds = Rectf(-_size.x/2, _size.y/2, _size.x/2, -_size.y/2);
 		_boundsBatch = gl::Batch::create(geom::Rect().rect(Rectf(-size.x/2, size.y/2, size.x/2, -size.y/2)).colors(color, color, color, color), shader);
 	}
 
