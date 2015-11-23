@@ -41,7 +41,7 @@ namespace mop {
 		gl::BatchRef _boundsBatch;
 		
 		mutex _subViewsMtx;
-		vector<shared_ptr<View>> _subViews;
+		list<shared_ptr<View>> _subViews;
 		unordered_set<unsigned long> _touchesBeganInside;
 		
 		/* SIGNALS */
@@ -68,7 +68,7 @@ namespace mop {
 		virtual const vec2&	getPosition() { return _position; }
 		virtual const float	getAngle() { return _angle; }
 		virtual const bool	isTouchOpaque()	{ return _touchOpaque; }
-		const vector<shared_ptr<View>>& getSubviews()	{ return _subViews; }
+		const list<shared_ptr<View>>& getSubviews()	{ return _subViews; }
 
 		void addSubView(shared_ptr<View> subView) { _subViews.push_back(subView); }
 		void removeSubView(shared_ptr<View> subView);
