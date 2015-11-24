@@ -70,7 +70,7 @@ namespace mop {
 		virtual const bool	isTouchOpaque()	{ return _touchOpaque; }
 		const list<shared_ptr<View>>& getSubviews()	{ return _subViews; }
 
-		void addSubView(shared_ptr<View> subView) { _subViews.push_back(subView); }
+		void addSubView(shared_ptr<View> subView) { _subViews.push_front(subView); }
 		void removeSubView(shared_ptr<View> subView);
 
 		virtual bool hitTest(vec2 position);
