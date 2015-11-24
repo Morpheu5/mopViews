@@ -59,61 +59,65 @@ namespace mop {
 	
 	void View::propagateTouches(ci::app::TouchEvent &event, TouchEventType type) {
 		auto touches = vector<ci::app::TouchEvent::Touch>(event.getTouches());
-		_propagateTouches(touches, type);
-	}
-	
-	void View::_propagateTouches(vector<ci::app::TouchEvent::Touch>& touches, TouchEventType type) {
-		for(auto i = _subViews.rbegin(); i != _subViews.rend(); ++i) {
-			auto subView = *i;
-			subView->_propagateTouches(touches, type);
+		
+		list<mop::View*> stack;
+		stack.push_front(this);
+		for(auto e = stack.rbegin(); e != stack.rend(); ++e) {
+			for(auto i : (*e)->getSubviews()) {
+				stack.push_front(i.get());
+			}
 		}
+
 		// If the App class inherits correctly, the dynamic_cast works.
 		auto theApp = dynamic_cast<mop::mopViewsApp*>(App::get());
-		for(auto touchIt = touches.begin(); touchIt != touches.end(); ) {
-			auto touch = *touchIt;
-			// Here is the big moment where we convert from screen to world coordinates.
-			vec2 p = theApp->screenToWorld(touch.getPos());
-			switch(type) {
-				case TouchBegan: {
-					if(hitTest(p)) {
-						_touchesBeganInside.insert(touch.getId());
-						_touchDownInside.emit(this, TouchDownInside, p, theApp->screenToWorld(touch.getPrevPos()));
-						touchIt = touches.erase(touchIt);
-					} else {
-						++touchIt;
-					}
-					break;
-				}
-				case TouchMoved: {
-					if(hitTest(p)) {
-						if(_touchesBeganInside.find(touch.getId()) != _touchesBeganInside.end()) {
-							_touchDragInside.emit(this, TouchDragInside, p, theApp->screenToWorld(touch.getPrevPos()));
-						} else {
-							_touchMovedInside.emit(this, TouchMovedInside, p, theApp->screenToWorld(touch.getPrevPos()));
-						}
-						touchIt = touches.erase(touchIt);
-					} else {
-						++touchIt;
-					}
-					break;
-				}
-				case TouchEnded: {
-					if(hitTest(p)) {
-						if(_touchesBeganInside.find(touch.getId()) != _touchesBeganInside.end()) {
-							_touchesBeganInside.erase(touch.getId());
-							_touchUpInside.emit(this, TouchUpInside, p, theApp->screenToWorld(touch.getPrevPos()));
+		
+		for(auto e : stack) {
+			for(auto touchIt = touches.begin(); touchIt != touches.end(); ) {
+				auto touch = *touchIt;
+				// Here is the big moment where we convert from screen to world coordinates.
+				vec2 p = theApp->screenToWorld(touch.getPos());
+				switch(type) {
+					case TouchBegan: {
+						if(e->hitTest(p)) {
+							e->_touchesBeganInside.insert(touch.getId());
+							e->_touchDownInside.emit(e, TouchDownInside, p, theApp->screenToWorld(touch.getPrevPos()));
 							touchIt = touches.erase(touchIt);
 						} else {
 							++touchIt;
 						}
-					} else {
-						if(_touchesBeganInside.find(touch.getId()) != _touchesBeganInside.end()) {
-							_touchesBeganInside.erase(touch.getId());
-							_touchUpOutside.emit(this, TouchUpOutside, p, theApp->screenToWorld(touch.getPrevPos()));
-						}
-						++touchIt;
+						break;
 					}
-					break;
+					case TouchMoved: {
+						if(e->hitTest(p)) {
+							if(e->_touchesBeganInside.find(touch.getId()) != e->_touchesBeganInside.end()) {
+								e->_touchDragInside.emit(e, TouchDragInside, p, theApp->screenToWorld(touch.getPrevPos()));
+							} else {
+								e->_touchMovedInside.emit(e, TouchMovedInside, p, theApp->screenToWorld(touch.getPrevPos()));
+							}
+							touchIt = touches.erase(touchIt);
+						} else {
+							++touchIt;
+						}
+						break;
+					}
+					case TouchEnded: {
+						if(e->hitTest(p)) {
+							if(e->_touchesBeganInside.find(touch.getId()) != e->_touchesBeganInside.end()) {
+								e->_touchesBeganInside.erase(touch.getId());
+								e->_touchUpInside.emit(e, TouchUpInside, p, theApp->screenToWorld(touch.getPrevPos()));
+								touchIt = touches.erase(touchIt);
+							} else {
+								++touchIt;
+							}
+						} else {
+							if(e->_touchesBeganInside.find(touch.getId()) != e->_touchesBeganInside.end()) {
+								e->_touchesBeganInside.erase(touch.getId());
+								e->_touchUpOutside.emit(e, TouchUpOutside, p, theApp->screenToWorld(touch.getPrevPos()));
+							}
+							++touchIt;
+						}
+						break;
+					}
 				}
 			}
 		}
