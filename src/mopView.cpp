@@ -59,7 +59,7 @@ namespace mop {
 	
 	void View::propagateTouches(ci::app::TouchEvent &event, TouchEventType type) {
 		auto touches = vector<ci::app::TouchEvent::Touch>(event.getTouches());
-		
+
 		list<mop::View*> stack;
 		stack.push_front(this);
 		for(auto e = stack.rbegin(); e != stack.rend(); ++e) {
