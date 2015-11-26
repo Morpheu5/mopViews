@@ -95,6 +95,9 @@ namespace mop {
 								e->_touchMovedInside.emit(e, TouchMovedInside, p, theApp->screenToWorld(touch.getPrevPos()));
 							}
 							touchIt = touches.erase(touchIt);
+						} else if(e->_touchesBeganInside.find(touch.getId()) != e->_touchesBeganInside.end()) {
+							e->_touchDragOutside.emit(e, TouchDragOutside, p, theApp->screenToWorld(touch.getPrevPos()));
+							touchIt = touches.erase(touchIt);
 						} else {
 							++touchIt;
 						}

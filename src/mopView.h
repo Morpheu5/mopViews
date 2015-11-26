@@ -19,6 +19,7 @@ namespace mop {
 		TouchDownInside,
 		TouchMovedInside,
 		TouchDragInside,
+		TouchDragOutside,
 		TouchUpInside,
 		TouchUpOutside
 	};
@@ -49,6 +50,7 @@ namespace mop {
 		TouchEventSignal _touchDownInside;
 		TouchEventSignal _touchMovedInside;
 		TouchEventSignal _touchDragInside;
+		TouchEventSignal _touchDragOutside;
 		TouchEventSignal _touchUpInside;
 		TouchEventSignal _touchUpOutside;
 
@@ -83,6 +85,7 @@ namespace mop {
 		TouchEventSignal& getTouchDownInside() { return _touchDownInside; }
 		TouchEventSignal& getTouchMovedInside() { return _touchMovedInside; }
 		TouchEventSignal& getTouchDragInside() { return _touchDragInside; }
+		TouchEventSignal& getTouchDragOutside() { return _touchDragOutside; }
 		TouchEventSignal& getTouchUpInside() { return _touchUpInside; }
 		TouchEventSignal& getTouchUpOutside() { return _touchUpOutside; }
 };
