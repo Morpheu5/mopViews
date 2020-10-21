@@ -1,7 +1,10 @@
 #pragma once
 
-#include "cinder/gl/gl.h"
+#include <cinder/app/App.h>
+#include <cinder/Signals.h>
+#include <cinder/gl/gl.h>
 #include <unordered_set>
+#include <list>
 
 using namespace std;
 using namespace ci;
